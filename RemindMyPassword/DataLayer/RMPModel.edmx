@@ -1,0 +1,646 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RMPModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="RMPModelStoreContainer">
+          <EntitySet Name="Captions" EntityType="RMPModel.Store.Captions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Feedbacks" EntityType="RMPModel.Store.Feedbacks" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ListElements" EntityType="RMPModel.Store.ListElements" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Messages" EntityType="RMPModel.Store.Messages" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PasswordQueries" EntityType="RMPModel.Store.PasswordQueries" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SavedUserQueries" EntityType="RMPModel.Store.SavedUserQueries" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Titles" EntityType="RMPModel.Store.Titles" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Users" EntityType="RMPModel.Store.Users" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="WebSites" EntityType="RMPModel.Store.WebSites" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GetMostUsedWebSites" EntityType="RMPModel.Store.GetMostUsedWebSites" store:Type="Views" store:Schema="dbo" store:Name="GetMostUsedWebSites">
+            <DefiningQuery>SELECT 
+      [GetMostUsedWebSites].[Name] AS [Name], 
+      [GetMostUsedWebSites].[cnt] AS [cnt]
+      FROM [dbo].[GetMostUsedWebSites] AS [GetMostUsedWebSites]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="GetUserSavedWebSites" EntityType="RMPModel.Store.GetUserSavedWebSites" store:Type="Views" store:Schema="dbo" store:Name="GetUserSavedWebSites">
+            <DefiningQuery>SELECT 
+      [GetUserSavedWebSites].[Id] AS [Id], 
+      [GetUserSavedWebSites].[UserId] AS [UserId], 
+      [GetUserSavedWebSites].[UserName] AS [UserName], 
+      [GetUserSavedWebSites].[Name] AS [Name], 
+      [GetUserSavedWebSites].[Description] AS [Description], 
+      [GetUserSavedWebSites].[AlgorithmLevel] AS [AlgorithmLevel], 
+      [GetUserSavedWebSites].[CharCount] AS [CharCount]
+      FROM [dbo].[GetUserSavedWebSites] AS [GetUserSavedWebSites]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Feedbacks_Users" Association="RMPModel.Store.FK_Feedbacks_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Feedbacks" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PasswordQueries_Users" Association="RMPModel.Store.FK_PasswordQueries_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PasswordQueries" EntitySet="PasswordQueries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PasswordQuery_WebSite" Association="RMPModel.Store.FK_PasswordQuery_WebSite">
+            <End Role="WebSites" EntitySet="WebSites" />
+            <End Role="PasswordQueries" EntitySet="PasswordQueries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SavedQueries_Users" Association="RMPModel.Store.FK_SavedQueries_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="SavedUserQueries" EntitySet="SavedUserQueries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SavedQueries_WebSites" Association="RMPModel.Store.FK_SavedQueries_WebSites">
+            <End Role="WebSites" EntitySet="WebSites" />
+            <End Role="SavedUserQueries" EntitySet="SavedUserQueries" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Captions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Text" Type="nvarchar" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Feedbacks">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Topic" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="FeedbackText" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="UserId" Type="bigint" />
+        </EntityType>
+        <EntityType Name="ListElements">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Text" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Messages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Text" Type="nvarchar" Nullable="false" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="PasswordQueries">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" />
+          <Property Name="WebSiteId" Type="bigint" Nullable="false" />
+          <Property Name="UserId" Type="bigint" />
+          <Property Name="GeneratedAt" Type="datetime" />
+          <Property Name="AlgorithmType" Type="varchar" MaxLength="10" />
+          <Property Name="CharCount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SavedUserQueries">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="250" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="WebSiteId" Type="bigint" Nullable="false" />
+          <Property Name="AlgorithmLevel" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="ApplicationSource" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="CharCount" Type="int" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Titles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Text" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="50" />
+          <Property Name="BornAt" Type="datetime" />
+          <Property Name="EmailAddress" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="LoginName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="WebSites">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'RemMyPass.dbo.GetMostUsedWebSites' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="GetMostUsedWebSites">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="cnt" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'RemMyPass.dbo.GetUserSavedWebSites' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="GetUserSavedWebSites">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="AlgorithmLevel" />
+            <PropertyRef Name="CharCount" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="250" />
+          <Property Name="AlgorithmLevel" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="CharCount" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Feedbacks_Users">
+          <End Role="Users" Type="RMPModel.Store.Users" Multiplicity="0..1" />
+          <End Role="Feedbacks" Type="RMPModel.Store.Feedbacks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Feedbacks">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PasswordQueries_Users">
+          <End Role="Users" Type="RMPModel.Store.Users" Multiplicity="0..1" />
+          <End Role="PasswordQueries" Type="RMPModel.Store.PasswordQueries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PasswordQueries">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PasswordQuery_WebSite">
+          <End Role="WebSites" Type="RMPModel.Store.WebSites" Multiplicity="1" />
+          <End Role="PasswordQueries" Type="RMPModel.Store.PasswordQueries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebSites">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PasswordQueries">
+              <PropertyRef Name="WebSiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SavedQueries_Users">
+          <End Role="Users" Type="RMPModel.Store.Users" Multiplicity="1" />
+          <End Role="SavedUserQueries" Type="RMPModel.Store.SavedUserQueries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SavedUserQueries">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SavedQueries_WebSites">
+          <End Role="WebSites" Type="RMPModel.Store.WebSites" Multiplicity="1" />
+          <End Role="SavedUserQueries" Type="RMPModel.Store.SavedUserQueries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebSites">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SavedUserQueries">
+              <PropertyRef Name="WebSiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RMPModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="RMPEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="Captions" EntityType="RMPModel.Caption" />
+          <EntitySet Name="Feedbacks" EntityType="RMPModel.Feedback" />
+          <EntitySet Name="ListElements" EntityType="RMPModel.ListElement" />
+          <EntitySet Name="Messages" EntityType="RMPModel.Message" />
+          <EntitySet Name="PasswordQueries" EntityType="RMPModel.PasswordQuery" />
+          <EntitySet Name="SavedUserQueries" EntityType="RMPModel.SavedUserQuery" />
+          <EntitySet Name="Titles" EntityType="RMPModel.Title" />
+          <EntitySet Name="Users" EntityType="RMPModel.User" />
+          <EntitySet Name="WebSites" EntityType="RMPModel.WebSite" />
+          <EntitySet Name="GetMostUsedWebSites" EntityType="RMPModel.GetMostUsedWebSite" />
+          <EntitySet Name="GetUserSavedWebSites" EntityType="RMPModel.GetUserSavedWebSite" />
+          <AssociationSet Name="FK_Feedbacks_Users" Association="RMPModel.FK_Feedbacks_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Feedback" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PasswordQueries_Users" Association="RMPModel.FK_PasswordQueries_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PasswordQuery" EntitySet="PasswordQueries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PasswordQuery_WebSite" Association="RMPModel.FK_PasswordQuery_WebSite">
+            <End Role="WebSite" EntitySet="WebSites" />
+            <End Role="PasswordQuery" EntitySet="PasswordQueries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SavedQueries_Users" Association="RMPModel.FK_SavedQueries_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="SavedUserQuery" EntitySet="SavedUserQueries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SavedQueries_WebSites" Association="RMPModel.FK_SavedQueries_WebSites">
+            <End Role="WebSite" EntitySet="WebSites" />
+            <End Role="SavedUserQuery" EntitySet="SavedUserQueries" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Caption">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Text" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Feedback">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Topic" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FeedbackText" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreatedAt" Nullable="false" />
+          <Property Type="Int64" Name="UserId" />
+          <NavigationProperty Name="User" Relationship="RMPModel.FK_Feedbacks_Users" FromRole="Feedback" ToRole="User" />
+        </EntityType>
+        <EntityType Name="ListElement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="ParentId" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Text" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Text" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PasswordQuery">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int64" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="UserName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Int64" Name="WebSiteId" Nullable="false" />
+          <Property Type="Int64" Name="UserId" />
+          <Property Type="DateTime" Name="GeneratedAt" />
+          <Property Type="String" Name="AlgorithmType" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="CharCount" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="RMPModel.FK_PasswordQueries_Users" FromRole="PasswordQuery" ToRole="User" />
+          <NavigationProperty Name="WebSite" Relationship="RMPModel.FK_PasswordQuery_WebSite" FromRole="PasswordQuery" ToRole="WebSite" />
+        </EntityType>
+        <EntityType Name="SavedUserQuery">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int64" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="Int64" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int64" Name="WebSiteId" Nullable="false" />
+          <Property Type="String" Name="AlgorithmLevel" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ApplicationSource" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="CharCount" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedAt" Nullable="false" />
+          <Property Type="DateTime" Name="UpdatedAt" />
+          <NavigationProperty Name="User" Relationship="RMPModel.FK_SavedQueries_Users" FromRole="SavedUserQuery" ToRole="User" />
+          <NavigationProperty Name="WebSite" Relationship="RMPModel.FK_SavedQueries_WebSites" FromRole="SavedUserQuery" ToRole="WebSite" />
+        </EntityType>
+        <EntityType Name="Title">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Text" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int64" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Surname" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="BornAt" />
+          <Property Type="String" Name="EmailAddress" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LoginName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreatedAt" Nullable="false" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Feedbacks" Relationship="RMPModel.FK_Feedbacks_Users" FromRole="User" ToRole="Feedback" />
+          <NavigationProperty Name="PasswordQueries" Relationship="RMPModel.FK_PasswordQueries_Users" FromRole="User" ToRole="PasswordQuery" />
+          <NavigationProperty Name="SavedUserQueries" Relationship="RMPModel.FK_SavedQueries_Users" FromRole="User" ToRole="SavedUserQuery" />
+        </EntityType>
+        <EntityType Name="WebSite">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int64" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PasswordQueries" Relationship="RMPModel.FK_PasswordQuery_WebSite" FromRole="WebSite" ToRole="PasswordQuery" />
+          <NavigationProperty Name="SavedUserQueries" Relationship="RMPModel.FK_SavedQueries_WebSites" FromRole="WebSite" ToRole="SavedUserQuery" />
+        </EntityType>
+        <EntityType Name="GetMostUsedWebSite">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="cnt" />
+        </EntityType>
+        <EntityType Name="GetUserSavedWebSite">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="AlgorithmLevel" />
+            <PropertyRef Name="CharCount" />
+          </Key>
+          <Property Type="Int64" Name="Id" Nullable="false" />
+          <Property Type="Int64" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="AlgorithmLevel" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="CharCount" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Feedbacks_Users">
+          <End Type="RMPModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="RMPModel.Feedback" Role="Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PasswordQueries_Users">
+          <End Type="RMPModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="RMPModel.PasswordQuery" Role="PasswordQuery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PasswordQuery">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PasswordQuery_WebSite">
+          <End Type="RMPModel.WebSite" Role="WebSite" Multiplicity="1" />
+          <End Type="RMPModel.PasswordQuery" Role="PasswordQuery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebSite">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PasswordQuery">
+              <PropertyRef Name="WebSiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SavedQueries_Users">
+          <End Type="RMPModel.User" Role="User" Multiplicity="1" />
+          <End Type="RMPModel.SavedUserQuery" Role="SavedUserQuery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SavedUserQuery">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SavedQueries_WebSites">
+          <End Type="RMPModel.WebSite" Role="WebSite" Multiplicity="1" />
+          <End Type="RMPModel.SavedUserQuery" Role="SavedUserQuery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebSite">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SavedUserQuery">
+              <PropertyRef Name="WebSiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RMPModelStoreContainer" CdmEntityContainer="RMPEntities" >
+          <EntitySetMapping Name="Captions">
+            <EntityTypeMapping TypeName="RMPModel.Caption">
+              <MappingFragment StoreEntitySet="Captions">
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Feedbacks">
+            <EntityTypeMapping TypeName="RMPModel.Feedback">
+              <MappingFragment StoreEntitySet="Feedbacks">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="FeedbackText" ColumnName="FeedbackText" />
+                <ScalarProperty Name="Topic" ColumnName="Topic" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ListElements">
+            <EntityTypeMapping TypeName="RMPModel.ListElement">
+              <MappingFragment StoreEntitySet="ListElements">
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="RMPModel.Message">
+              <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PasswordQueries">
+            <EntityTypeMapping TypeName="RMPModel.PasswordQuery">
+              <MappingFragment StoreEntitySet="PasswordQueries">
+                <ScalarProperty Name="CharCount" ColumnName="CharCount" />
+                <ScalarProperty Name="AlgorithmType" ColumnName="AlgorithmType" />
+                <ScalarProperty Name="GeneratedAt" ColumnName="GeneratedAt" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="WebSiteId" ColumnName="WebSiteId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SavedUserQueries">
+            <EntityTypeMapping TypeName="RMPModel.SavedUserQuery">
+              <MappingFragment StoreEntitySet="SavedUserQueries">
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="CharCount" ColumnName="CharCount" />
+                <ScalarProperty Name="ApplicationSource" ColumnName="ApplicationSource" />
+                <ScalarProperty Name="AlgorithmLevel" ColumnName="AlgorithmLevel" />
+                <ScalarProperty Name="WebSiteId" ColumnName="WebSiteId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Titles">
+            <EntityTypeMapping TypeName="RMPModel.Title">
+              <MappingFragment StoreEntitySet="Titles">
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="RMPModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="BornAt" ColumnName="BornAt" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebSites">
+            <EntityTypeMapping TypeName="RMPModel.WebSite">
+              <MappingFragment StoreEntitySet="WebSites">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GetMostUsedWebSites">
+            <EntityTypeMapping TypeName="RMPModel.GetMostUsedWebSite">
+              <MappingFragment StoreEntitySet="GetMostUsedWebSites">
+                <ScalarProperty Name="cnt" ColumnName="cnt" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GetUserSavedWebSites">
+            <EntityTypeMapping TypeName="RMPModel.GetUserSavedWebSite">
+              <MappingFragment StoreEntitySet="GetUserSavedWebSites">
+                <ScalarProperty Name="CharCount" ColumnName="CharCount" />
+                <ScalarProperty Name="AlgorithmLevel" ColumnName="AlgorithmLevel" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="RMPModel" >
+        <EntityTypeShape EntityType="RMPModel.Caption" Width="1.5" PointX="5.75" PointY="1" Height="1.5956835937500031" />
+        <EntityTypeShape EntityType="RMPModel.Feedback" Width="1.5" PointX="3" PointY="5.375" Height="2.1725878906250031" />
+        <EntityTypeShape EntityType="RMPModel.ListElement" Width="1.5" PointX="7.75" PointY="1" Height="1.7879850260416674" />
+        <EntityTypeShape EntityType="RMPModel.Message" Width="1.5" PointX="0.75" PointY="9" Height="1.5956835937500031" />
+        <EntityTypeShape EntityType="RMPModel.PasswordQuery" Width="1.5" PointX="6" PointY="5.125" Height="2.749492187499996" />
+        <EntityTypeShape EntityType="RMPModel.SavedUserQuery" Width="1.5" PointX="3" PointY="0.75" Height="3.5186979166666674" />
+        <EntityTypeShape EntityType="RMPModel.Title" Width="1.5" PointX="2.75" PointY="9" Height="1.5956835937500031" />
+        <EntityTypeShape EntityType="RMPModel.User" Width="1.5" PointX="0.75" PointY="5" Height="3.1340950520833388" />
+        <EntityTypeShape EntityType="RMPModel.WebSite" Width="1.5" PointX="0.75" PointY="1.625" Height="1.7879850260416674" />
+        <EntityTypeShape EntityType="RMPModel.GetMostUsedWebSite" Width="1.5" PointX="8.75" PointY="4" Height="1.4033821614583388" />
+        <EntityTypeShape EntityType="RMPModel.GetUserSavedWebSite" Width="1.5" PointX="4.75" PointY="9" Height="2.3648893229166674" />
+        <AssociationConnector Association="RMPModel.FK_Feedbacks_Users" >
+          <ConnectorPoint PointX="2.25" PointY="6.4612939453125016" />
+          <ConnectorPoint PointX="3" PointY="6.4612939453125016" />
+        </AssociationConnector>
+        <AssociationConnector Association="RMPModel.FK_PasswordQueries_Users" >
+          <ConnectorPoint PointX="2.25" PointY="7.7422900390625" />
+          <ConnectorPoint PointX="6" PointY="7.7422900390625" />
+        </AssociationConnector>
+        <AssociationConnector Association="RMPModel.FK_PasswordQuery_WebSite" >
+          <ConnectorPoint PointX="2.25" PointY="3.4129850260416674" />
+          <ConnectorPoint PointX="2.625" PointY="3.7879850260416674" />
+          <ConnectorPoint PointX="2.625" PointY="4.75" />
+          <ConnectorPoint PointX="5.625" PointY="4.75" />
+          <ConnectorPoint PointX="6" PointY="5.125" />
+        </AssociationConnector>
+        <AssociationConnector Association="RMPModel.FK_SavedQueries_Users" >
+          <ConnectorPoint PointX="2.25" PointY="5.0623066923076925" />
+          <ConnectorPoint PointX="2.8125" PointY="4.4998066923076925" />
+          <ConnectorPoint PointX="2.8125" PointY="2.5093489583333337" />
+          <ConnectorPoint PointX="3" PointY="2.5093489583333337" />
+        </AssociationConnector>
+        <AssociationConnector Association="RMPModel.FK_SavedQueries_WebSites" >
+          <ConnectorPoint PointX="2.25" PointY="2.0046744791666669" />
+          <ConnectorPoint PointX="3" PointY="2.0046744791666669" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
